@@ -3,12 +3,6 @@
 FROM ubuntu:trusty
 MAINTAINER mike@anonymoushash.com
 
-ENV HTTP_PROXY http://ProxyServiceAccount:DTpass11@192.168.90.226:8080
-ENV HTTPS_PROXY http://ProxyServiceAccount:DTpass11@192.168.90.226:8080
-ENV https_proxy http://ProxyServiceAccount:DTpass11@192.168.90.226:8080
-ENV http_proxy http://ProxyServiceAccount:DTpass11@192.168.90.226:8080
-ENV NO_PROXY localhost,10.134.8.11,10.134.8.12,10.134.8.70
-ENV no_proxy localhost,10.134.8.11,10.134.8.12,10.134.8.70
 
 RUN dpkg --add-architecture i386  # for libpam:i386
 RUN apt-get update
