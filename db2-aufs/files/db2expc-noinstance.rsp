@@ -1,0 +1,29 @@
+PROD = EXPRESS_C
+LIC_AGREEMENT = ACCEPT
+INSTALL_TYPE = TYPICAL
+FILE = /opt/ibm/db2/V10.5
+
+LANG = EN
+
+* INSTANCE = db2inst1
+* db2inst1.NAME = db2inst1
+* db2inst1.UID = 507
+* db2inst1.GROUP_NAME = db2iadm1
+* db2inst1.GID = 102
+* db2inst1.HOME_DIRECTORY = /home/db2inst1
+* db2inst1.PASSWORD = db2inst1
+* db2inst1.AUTOSTART = YES
+* db2inst1.TYPE = wse
+* db2inst1.FENCED_USERNAME = db2fenc1
+* db2inst1.FENCED_UID = 508
+* db2inst1.FENCED_GROUP_NAME = db2fadm1
+* db2inst1.FENCED_GID = 103
+* db2inst1.FENCED_HOME_DIRECTORY = /home/db2fenc1
+* db2inst1.FENCED_PASSWORD = db2inst1
+* 
+* DAS_USERNAME = dasusr1
+* DAS_UID = 506
+* DAS_GROUP_NAME = dasadm1
+* DAS_GID = 101
+* DAS_HOME_DIRECTORY = /home/dasusr1
+* DAS_PASSWORD = db2inst1

@@ -1,0 +1,28 @@
+*--------------------------------------------------------
+* Response file for installing DB2 into the DT docker image.
+* Note that docker 0.6 does not support O_DIRECT, which
+* DB2 requires, so we must mount the DB2 instance directory
+* a /home/db2inst1 needs to be mounted loopback
+* to a file somewhere in the container filesystem.
+* mount -o loop=/dev/loop0 /db/disk-image /home/db2inst1 
+* for this to work under docker.
+*--------------------------
+PROD = EXPRESS_C
+FILE = /opt/ibm/db2/V10.5
+LIC_AGREEMENT = ACCEPT
+INSTALL_TYPE = TYPICAL
+
+LANG = EN
+
+INSTANCE = db2inst1
+db2inst1.NAME = db2inst1
+db2inst1.GROUP_NAME = db2iadm1
+db2inst1.HOME_DIRECTORY = /home/db2inst1
+db2inst1.PASSWORD = db2inst1
+db2inst1.AUTOSTART = YES
+db2inst1.TYPE = wse
+db2inst1.FENCED_USERNAME = db2fenc1
+db2inst1.FENCED_GROUP_NAME = db2fadm1
+db2inst1.FENCED_HOME_DIRECTORY = /home/db2fenc1
+db2inst1.FENCED_PASSWORD = db2inst1
+

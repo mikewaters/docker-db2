@@ -1,0 +1,12 @@
+#!/bin/bash
+
+
+IMAGE=db2-dm
+
+sudo docker build -t $IMAGE .
+
+sudo docker run --privileged --entrypoint "/install.sh" $IMAGE:latest
+containerid=$(docker ps -aq $IMAGE:latest |sed -n 2p)
+sudo docker stop $containerid
+sudo docker commit $containerid $IMAGE:latest
+

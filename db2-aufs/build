@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Build the DB2 dt20db package docker image using the docker AUFS storage backend.
+# usage: $0 revision empty-directory
+# Script will use empty directory to store the DB2 instance; since DB2
+# requires direct i/o on the d=instance level, and since AUFS does not 
+# support that, we need to mount a directory from the host into the
+# container and store the instance there.
+#
+# 1. gets the desired package from localshop, extracts the binary restore
+# images, sticks them into the docker build context and ADDs them
+# to the image at /dbimages.
+# 2. builds the dockerfile, installing the DB2 server
+# 3. runs and commits a container that creates the DB2 instance (bind-mounted
+# to a host volume), creates the databases in that instance, and populates the 
+# databases with the requiested revision of DT2 databases.
+#
+# Notes:
+#   - requires GNU tar
+#
+# TODO:
+#
+# Helpful links:
+#   http://tacy.github.io/blog/2014/04/04/Docker/
+#	https://github.com/jeffbonhag/db2-docker
+#
+# @mikewaters
+
+IMAGE=db2-aufs
+
+set -e
+
+instance_bind_mount_root=$1
+if [[ -z $instance_bind_mount_root ]] || \
+	[[ ! -d $instance_bind_mount_root ]] || \
+	[[ `ls -A $instance_bind_mount_root` ]]; then
+	echo "error: must provide an empty directory for storing bind-mounted db2 instance directory." 2>&1
+	exit 1
+fi
+# docker -v wants an abspath
+instance_bind_mount_root=$(readlink -f $instance_bind_mount_root)
+
+# Build the Dockerfile.  This will do everything up to creating and populating the instance
+docker build -t $IMAGE:$revision .
+
+# Start a container, running the install script, and then commit
+docker run --privileged -v $instance_bind_mount_root:/db -t $IMAGE:$revision ./install.sh
+containerid=$(sudo docker ps -l | grep $IMAGE:$revision | awk '{print $1}')
+docker stop $containerid
+docker commit $containerid $IMAGE:$revision
+
